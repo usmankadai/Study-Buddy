@@ -130,7 +130,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   }
 }
 
-export async function getAllUserSessions(userId: string, client: any) {
+async function getAllUserSessions(userId: string, client: any) {
   try {
     const query = `
     SELECT

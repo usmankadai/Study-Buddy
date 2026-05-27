@@ -1,7 +1,7 @@
 
 import pool from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
-import { getAllUserSessions } from "../session/route";
+import { getAllUserSessions } from "@/lib/queries";
 import { UserSessionData } from "@/app/types";
 
 export async function POST(request: NextRequest) {
