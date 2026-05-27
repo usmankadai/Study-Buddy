@@ -67,7 +67,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (userToken: any) => {
     setToken(userToken);
-    const decodedUser = jwtDecode(userToken);
+    const decodedUser: any = jwtDecode(userToken);
+    if (!decodedUser.email?.endsWith("@myport.ac.uk")) {
+      alert("Access restricted to University of Portsmouth accounts only.");
+      return;
+    }
     try {
       const loginRes = await fetch("/api/login", {
         method: "POST",
