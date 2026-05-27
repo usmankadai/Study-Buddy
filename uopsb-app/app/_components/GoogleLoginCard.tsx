@@ -3,7 +3,7 @@ import { useAuth } from "../AuthContext";
 import { GoogleLogin } from "@react-oauth/google";
 
 const GoogleLoginCard = () => {
-  const { isLoggedIn, googleLogin } = useAuth();
+  const { isLoggedIn, googleLogin, authError } = useAuth();
   const router = useRouter();
 
   const handleLogin = async (credentialResponse: any) => {
@@ -29,6 +29,11 @@ const GoogleLoginCard = () => {
             Sign in with your UOP Google account to access all features of the
             application.
           </p>
+          {authError && (
+            <p className="text-red-600 text-sm text-center mb-4 bg-red-50 border border-red-200 rounded-md px-3 py-2">
+              {authError}
+            </p>
+          )}
           <div className="flex justify-center">
             <GoogleLogin onSuccess={handleLogin} onError={errorMessage} />
           </div>

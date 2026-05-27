@@ -20,6 +20,7 @@ interface AuthContextValue {
   setUser: Dispatch<SetStateAction<any | null>>;
   googleLogin: (credentialResponse: any) => void;
   logout: () => void;
+  authError: string | null;
 }
 
 interface AuthProviderProps {
@@ -36,6 +37,7 @@ const AuthContext = createContext<AuthContextValue>({
   setUser: () => {},
   googleLogin: () => {},
   logout: () => {},
+  authError: null,
 });
 
 export const useAuth = () => {
@@ -47,6 +49,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [token, setToken] = useState("");
+  const [authError, setAuthError] = useState<string | null>(null);
   const router = useRouter();
   const path = usePathname();
 
@@ -69,9 +72,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setToken(userToken);
     const decodedUser: any = jwtDecode(userToken);
     if (!decodedUser.email?.endsWith("@myport.ac.uk")) {
-      alert("Access restricted to University of Portsmouth accounts only.");
+      setAuthError("Access restricted to University of Portsmouth accounts only.");
       return;
     }
+    setAuthError(null);
     try {
       const loginRes = await fetch("/api/login", {
         method: "POST",
@@ -119,6 +123,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         token,
         googleLogin,
         logout,
+        authError,
       }}
     >
       {children}
